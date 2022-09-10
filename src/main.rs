@@ -19,7 +19,7 @@ fn draw_board(board: Vec<char>) {
     }
 }
 
-fn _get_move() -> &'static str {
+fn get_move() -> &'static str {
     let mut string_form = String::new();
     io::stdin()
             .read_line(&mut string_form)
@@ -27,8 +27,22 @@ fn _get_move() -> &'static str {
     return "x";
 }
 
+fn redo_board(move_l: &str, move_p: char) -> Vec<char> {
+    let mut y_offset: i32 = 0;
+    let mut x_offset: i32 = 0;
+    let mut peice: i32 = 0;
+    for character in move_l.chars() {
+        match character {
+            'a' => (),
+            'b' => y_offset = 8,
+        }
+    }
+    
+    return [].to_vec()
+}
+
 fn main() {
-    let board: Vec<char> = ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜',
+    let mut board: Vec<char> = ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜',
                             '♟', '♟', '♟', '♟', '♟', '♟', '♟', '♟',
                             ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
                             ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
@@ -36,12 +50,25 @@ fn main() {
                             ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
                             '♙', '♙', '♙', '♙', '♙', '♙', '♙', '♙',
                             '♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖'].to_vec();
+    let mut turn: char = 'W';
     // * Game loop
     let term = Term::stdout();
-    term.clear_screen();
+    match term.clear_screen() {
+        Ok(_) => (),
+        Err(_) => (),
+    };
     while 1==1 {
         draw_board(board.clone());
-        let move_l = _get_move();
-        term.clear_screen();
+        let move_l = get_move();
+        board = redo_board(move_l, turn);
+        match term.clear_screen() {
+            Ok(_) => (),
+            Err(_) => (),
+        };
+        if turn == 'W' {
+            turn = 'B';
+        } else {
+            turn = 'W';
+        }
     }
 }
